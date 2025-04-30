@@ -20,12 +20,13 @@ public class CardDeliveryTest {
         var formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         Selenide.open("http://localhost:9999");
         $("[placeholder='Город']").setValue("Чебоксары");
-        $("[placeholder='Дата встречи']").press(Keys.chord(Keys.SHIFT, HOME)+(DELETE));
+        $("[placeholder='Дата встречи']").press(Keys.chord(Keys.SHIFT, HOME) + (DELETE));
         $("[placeholder='Дата встречи']").setValue(LocalDate.now().plusDays(7).format(formatter));
         $("[name='name']").setValue("Иван Петров");
         $("[name='phone']").setValue("+79990805555");
         $("[data-test-id='agreement']").click();
         $(".button").click();
-        $("[data-test-id='notification']").shouldBe(Condition.visible, Duration.ofSeconds(15));
+        $(".notification__content").shouldBe(Condition.visible, Duration.ofSeconds(15))
+                .shouldHave(Condition.text("Встреча успешно забронирована на " + LocalDate.now().plusDays(7).format(formatter)));
     }
 }
